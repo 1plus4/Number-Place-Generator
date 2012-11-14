@@ -52,14 +52,16 @@ class Puzzle
     impossible_numbers = Array.new(9).map!{ Array.new }
     col = 0
     while true
-      digit = possible(row/9, col, BoxOfIndex[row+col]).sample
+      index = row * 9 + col
+      digit = possible(row, col, BoxOfIndex[index]).sample
       if !digit || impossible_numbers[col].include?(digit)
         return false if col == 0
         impossible_numbers[col] = Array.new
         col -= 1
-        impossible_numbers[col].push(@grid[row+col])
+        index = row * 9 + col
+        impossible_numbers[col].push(@grid[index])
       else
-        @grid[row+col] = digit
+        @grid[index] = digit
         col += 1
         return true if col == 9
       end
@@ -70,7 +72,7 @@ class Puzzle
     @grid = Array.new(81, 0)
     row = 0
     while true
-      if fill_row(row*9)
+      if fill_row(row)
         row += 1
         return true if row == 9
       else
